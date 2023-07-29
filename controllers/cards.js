@@ -1,33 +1,29 @@
-const Card = require("../models/card");
+const Card = require('../models/card');
 
 module.exports.getCards = (req, res) => {
   Card.find({})
-    .orFail(new Error("NotValidId"))
+    .orFail(new Error('NotValidId'))
     .then((cards) => res.send(cards))
     .catch((err) => {
-      if (err.name === "CastError") {
-        res.status(400).send({ message: "Переданы некорректные данные" });
-      } else if (err.message === "NotValidId") {
-        res.status(404).send({ message: "Объект не найден" });
+      if (err.name === 'CastError') {
+        res.status(400).send({ message: 'Переданы некорректные данные' });
+      } else if (err.message === 'NotValidId') {
+        res.status(404).send({ message: 'Объект не найден' });
       } else {
-        res.status(500).send({ message: "Ошибка на стороне сервера" });
+        res.status(500).send({ message: 'Ошибка на стороне сервера' });
       }
     });
 };
 
 module.exports.createCard = (req, res) => {
   const { name, link } = req.body;
-  Card.create({ name, link, owner: req.user })
+  Card.create({ name, link, owner: req.user._id })
     .then((card) => res.send(card))
     .catch((err) => {
-      if (err.name === "ValidationError") {
-        res
-          .status(400)
-          .send({
-            message: "Переданы некорректные данные при создании карточки",
-          });
+      if (err.name === 'ValidationError') {
+        res.status(400).send({ message: 'Переданы некорректные данные при создании карточки' });
       } else {
-        res.status(500).send({ message: "Ошибка на стороне сервера" });
+        res.status(500).send({ message: 'Ошибка на стороне сервера' });
       }
     });
 };
@@ -35,15 +31,15 @@ module.exports.createCard = (req, res) => {
 module.exports.deleteCardById = (req, res) => {
   const { cardId } = req.params;
   Card.findByIdAndRemove(cardId)
-    .orFail(new Error("NotValidId"))
+    .orFail(new Error('NotValidId'))
     .then((card) => res.send(card))
     .catch((err) => {
-      if (err.name === "CastError") {
-        res.status(400).send({ message: "Невалидный ID карточки" });
-      } else if (err.message === "NotValidId") {
-        res.status(404).send({ message: "Такой карточки не существует" });
+      if (err.name === 'CastError') {
+        res.status(400).send({ message: 'Невалидный ID карточки' });
+      } else if (err.message === 'NotValidId') {
+        res.status(404).send({ message: 'Такой карточки не существует' });
       } else {
-        res.status(500).send({ message: "Ошибка на стороне сервера" });
+        res.status(500).send({ message: 'Ошибка на стороне сервера' });
       }
     });
 };
@@ -55,17 +51,17 @@ module.exports.likeCard = (req, res) => {
     {
       new: true,
       runValidators: true,
-    }
+    },
   )
-    .orFail(new Error("NotValidId"))
+    .orFail(new Error('NotValidId'))
     .then((card) => res.send(card))
     .catch((err) => {
-      if (err.name === "CastError") {
-        res.status(400).send({ message: "Переданы некорректные данные" });
-      } else if (err.message === "NotValidId") {
-        res.status(404).send({ message: "Такой карточки не существует" });
+      if (err.name === 'CastError') {
+        res.status(400).send({ message: 'Переданы некорректные данные' });
+      } else if (err.message === 'NotValidId') {
+        res.status(404).send({ message: 'Такой карточки не существует' });
       } else {
-        res.status(500).send({ message: "Ошибка на стороне сервера" });
+        res.status(500).send({ message: 'Ошибка на стороне сервера' });
       }
     });
 };
@@ -77,17 +73,17 @@ module.exports.dislikeCard = (req, res) => {
     {
       new: true,
       runValidators: true,
-    }
+    },
   )
-    .orFail(new Error("NotValidId"))
+    .orFail(new Error('NotValidId'))
     .then((card) => res.send(card))
     .catch((err) => {
-      if (err.name === "CastError") {
-        res.status(400).send({ message: "Переданы некорректные данные" });
-      } else if (err.message === "NotValidId") {
-        res.status(404).send({ message: "Такой карточки не существует" });
+      if (err.name === 'CastError') {
+        res.status(400).send({ message: 'Переданы некорректные данные' });
+      } else if (err.message === 'NotValidId') {
+        res.status(404).send({ message: 'Такой карточки не существует' });
       } else {
-        res.status(500).send({ message: "Ошибка на стороне сервера" });
+        res.status(500).send({ message: 'Ошибка на стороне сервера' });
       }
     });
 };
